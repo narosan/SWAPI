@@ -1,7 +1,6 @@
 import { Schema, model, Document, Collection, Mongoose, Types } from 'mongoose'
 
 interface PlanetaInterface extends Document{
-    _id: Types.ObjectId,
     nome?: String,
     clima?: String,
     terreno?: String,
@@ -9,7 +8,6 @@ interface PlanetaInterface extends Document{
 }
 
 const PlanetaSchema = new Schema({
-    _id: Types.ObjectId,
     nome: {
         type: String,
         trim: true,
