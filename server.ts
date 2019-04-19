@@ -1,3 +1,3 @@
 import app from './app'
 
-app.listen(400) //port
+app.listen(400) //porta
