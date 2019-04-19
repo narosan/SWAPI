@@ -1,0 +1,17 @@
+{
+  "name": "swapi",
+  "version": "1.0.0",
+  "description": "WebApi de StarWars",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "WebApi",
+    "SWAPI",
+    "REST",
+    "NodeJS"
+  ],
+  "author": "Matheus Almeida",
+  "license": "ISC"
+}
