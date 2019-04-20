@@ -1,7 +1,9 @@
 import Planeta from '../schemas/Planeta'
-import { Request, Response } from 'express'
+import { Request, Response, response } from 'express'
 import { Types } from 'mongoose'
 import request from 'request'
+
+var msgError = new Array()
 
 const swAparicoes = async function(obj) {
     return new Promise((resolve, reject) => {
@@ -11,7 +13,13 @@ const swAparicoes = async function(obj) {
             json: true
         }, (error, resp, body) => {
             if(error || resp.statusCode > 399) reject(false)
-            if(body.count == 0) resolve(body.count)
+            
+            //evitar undefined no create
+            if(body.count == 0) resolve(body.count) 
+            
+            //Pesquisa do search ocorre por like, essa validação impede de trazer aparições de que não pertence ao filme
+            if(body.results[0].name != obj.nome) resolve(0) 
+            
             try {
                 resolve(body.results[0].films.length)
             } catch(err) {
@@ -20,7 +28,8 @@ const swAparicoes = async function(obj) {
         })
     })
 }
-class PlanetaController {   
+
+class PlanetaController {  
     public async getAllPlanets(req: Request, res: Response): Promise<Response> {
         const planets = await Planeta.find()
         return res.json(planets)
@@ -49,14 +58,28 @@ class PlanetaController {
     }
 
     public async createPlanet(req: Request, res: Response): Promise<Response> {
-        var jsonPlanet = new Array(req.body) // BugFix se usuário passar obj e não json não existia forEach para body
-        jsonPlanet.forEach(async element => {
-            element['aparicoes'] = await swAparicoes(element)
-            await Planeta.create(element)
-        })
-        return res.status(200).json({
-            message: `Planeta(s) criado(s) com sucesso!`
-        })
+        try {
+            var jsonPlanet = new Array(req.body) // BugFix se usuário passar obj e não json não existia forEach para body
+            
+            for(let i = 0; i < jsonPlanet.length; i++) 
+                jsonPlanet[i]['aparicoes'] = await swAparicoes(jsonPlanet[i])
+
+            await Planeta.create(jsonPlanet)
+            .then((resp) => {
+                return res.status(200).json({
+                    message: 'Planeta(s) criados com sucesso.',
+                    obj: resp
+                })
+            })
+            .catch((err) => {
+                return res.status(404).json({
+                    message: err
+                })
+            })
+            
+        } catch(err) {
+            return res.json(err)
+        }        
     }
 
     public async updatePlanet(req: Request, res: Response): Promise<Response> {

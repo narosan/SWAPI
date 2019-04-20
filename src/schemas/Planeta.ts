@@ -11,17 +11,17 @@ const PlanetaSchema = new Schema({
     nome: {
         type: String,
         trim: true,
-        required: true
+        required: [true, 'Nome não pode ser vázio.']
     },
     clima: {
         type: String,
         trim: true,
-        required: true
+        required: [true, 'Clima não pode ser vázio.']
     },
     terreno: {
         type: String,
         trim: true,
-        required: true
+        required: [true, 'Terreno não pode ser vázio.']
     },
     aparicoes: Number
 }, {
