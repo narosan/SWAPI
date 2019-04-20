@@ -3,8 +3,6 @@ import { Request, Response, response } from 'express'
 import { Types } from 'mongoose'
 import request from 'request'
 
-var msgError = new Array()
-
 const swAparicoes = async function(obj) {
     return new Promise((resolve, reject) => {
         request({ 
