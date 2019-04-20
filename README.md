@@ -3,11 +3,17 @@
 **Para o projeto eu utilizei as seguintes bibliotecas**
 
 1.mongoose
+
 2.express
+
 3.sucrase
+
 4.nodemon
+
 5.body-parser
+
 6.helmet
+
 7.request
 
 `npm install express mongoose sucrase nodemon body-parser helmet request
