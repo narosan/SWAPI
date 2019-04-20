@@ -1,23 +1,32 @@
 import Planeta from '../schemas/Planeta'
 import { Request, Response } from 'express'
-import https from 'https'
-import { ObjectID } from 'bson';
+import { Types } from 'mongoose'
+import request from 'request'
 
-class PlanetaController {
-
-    public option = {
-        hosts: 'https://swapi.co',
-        path: '/api/planets/',
-        method: 'GET'
-     }
-
+const swAparicoes = async function(obj) {
+    return new Promise((resolve, reject) => {
+        request({ 
+            url: `https://swapi.co/api/planets/?search=${obj.nome}`, 
+            method: 'GET',
+            json: true
+        }, (error, resp, body) => {
+            if(error || resp.statusCode > 399) reject(error)
+            try {
+                resolve(body.results[0].films.length)
+            } catch(err) {
+                reject(err)
+            }
+        })
+    })
+}
+class PlanetaController {   
     public async getAllPlanets(req: Request, res: Response): Promise<Response> {
         const planets = await Planeta.find()
         return res.json(planets)
     }
 
     public async getPlanetById(req: Request, res: Response): Promise<Response> {
-        if(!(req.params.id instanceof ObjectID))
+        if(!Types.ObjectId.isValid(req.params.id))
             return res.status(404).json({
                 message: `ID enviado não é do tipo ObjectID.`
             })
@@ -39,46 +48,45 @@ class PlanetaController {
     }
 
     public async createPlanet(req: Request, res: Response): Promise<Response> {
-        var planets = await Planeta.create(req.body)
+        req.body.map(async element => {
+            element['aparicoes'] = await swAparicoes(element)
+            await Planeta.create(element)
+        })
         return res.status(200).json({
             message: `Planeta(s) criado(s) com sucesso!`
         })
     }
 
-    public async getAparicoes(req: Request, res: Response): Promise<Response> {
-        const planets = https.request(this.option)
-        return res.json(planets)
-    } 
-
     public async updatePlanet(req: Request, res: Response): Promise<Response> {
-        if(!(req.params.id instanceof ObjectID))
+        if(!Types.ObjectId.isValid(req.params.id))
             return res.status(404).json({
                 message: `ID enviado não é do tipo ObjectID.`
             })
-        const planet = await Planeta.update({
-            _id: req.params.id
-        }, req.body, err => {
+        const planet = await Planeta.updateOne({ _id: req.params.id }, req.body)
+        .catch(err => {
             return res.status(500).json({
-                message: err
+                message: `Erro ao atualizar o planeta de id: ${req.params.id}`,
+                err: err
             })
         })
         return res.status(200).json({
-            message: `Planeta de id: ${req.params.id} atualizado.`
+            message: `Planeta de id: ${req.params.id} atualizado.`,
+            obj: planet
         })
     }
 
     public async deletePlanet(req: Request, res: Response): Promise<Response> {
-        if(!(req.params.id instanceof ObjectID))
+        if(!Types.ObjectId.isValid(req.params.id))
             return res.status(404).json({
                 message: `ID enviado não é do tipo ObjectID.`
             })
-
-        const planet = await Planeta.deleteOne({_id: req.params.id},
-             err => {
-                res.status(500).json({
-                    message: err
-                })
-             })
+        await Planeta.deleteOne({ id: req.params.id })
+        .catch(err => {
+            return res.status(500).json({
+                message: `Erro ao excluir o documento de id: ${req.params.id}`,
+                err: err
+            })
+        })
         return res.status(200).json({
             message: `Documento deletado com sucesso.`
         })
