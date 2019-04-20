@@ -10,7 +10,8 @@ const swAparicoes = async function(obj) {
             method: 'GET',
             json: true
         }, (error, resp, body) => {
-            if(error || resp.statusCode > 399) reject(error)
+            if(error || resp.statusCode > 399) reject(false)
+            if(body.count == 0) resolve(body.count)
             try {
                 resolve(body.results[0].films.length)
             } catch(err) {
@@ -48,7 +49,8 @@ class PlanetaController {
     }
 
     public async createPlanet(req: Request, res: Response): Promise<Response> {
-        req.body.map(async element => {
+        var jsonPlanet = new Array(req.body) // BugFix se usuário passar obj e não json não existia forEach para body
+        jsonPlanet.forEach(async element => {
             element['aparicoes'] = await swAparicoes(element)
             await Planeta.create(element)
         })

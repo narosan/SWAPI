@@ -1,10 +1,10 @@
-import { Schema, model, Document, Collection, Mongoose, Types } from 'mongoose'
+import { Schema, model, Document } from 'mongoose'
 
 interface PlanetaInterface extends Document{
     nome?: String,
     clima?: String,
     terreno?: String,
-    aparicoes?: Object
+    aparicoes?: Number
 }
 
 const PlanetaSchema = new Schema({
@@ -23,7 +23,7 @@ const PlanetaSchema = new Schema({
         trim: true,
         required: true
     },
-    aparicoes: Object
+    aparicoes: Number
 }, {
     timestamps: true,
     collection: 'Planeta'
