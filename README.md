@@ -22,7 +22,7 @@
 ---
 **Lista de REST API's**
 
-> GET: Buscar todos os planeta
+> GET: Buscar todos os planetas
 `/Planeta` 
 
 > GET: Buscar planeta por ID
