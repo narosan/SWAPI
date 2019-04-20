@@ -1,6 +1,6 @@
-####Desafio SWAPI####
+**Desafio SWAPI**
 ===
-##Para o projeto eu utilizei as seguintes bibliotecas:##
+**Para o projeto eu utilizei as seguintes bibliotecas**
 
 1.mongoose
 2.express
@@ -12,6 +12,7 @@
 
 `npm install express mongoose sucrase nodemon body-parser helmet request
 @types/express @types/mongoose @ types/helmet`
+
 ---
 **Lista de REST API's**
 
