@@ -33,28 +33,11 @@
 > GET: Buscar planeta por ID
 `/Planeta/?ObjectID`
 
-A resposta da api deve ser o seguinte objeto: 
-
-`
-{
-    "_id": "5cbb8033a37c701e2c23f26e",
-    "nome": "Tatooine",
-    "clima": "quente",
-    "terreno": "deserto",
-    "aparicoes": 5,
-    "createdAt": "2019-04-20T20:25:23.470Z",
-    "updatedAt": "2019-04-20T20:25:23.470Z",
-    "__v": 0
-}
-`
-
 - 200 -> OK!
 - 404 -> ID não é do tipo ObjectID
 ---
 > GET: Buscar planeta por nome
 `http://localhost:3337/Planeta/Nome/?nome`
-
-A resposta da api deve ser o seguinte objeto: 
 
 - 200 -> OK!
 ---
@@ -78,33 +61,6 @@ Exemplo de json enviado para API:
 ]
 `
 - 200 -> OK!
-`
-{
-    "message": "Planeta(s) criados com sucesso.",
-    "obj": [
-        {
-            "_id": "5cbce73fed3a4c27c0147bf0",
-            "nome": "Tatooine",
-            "clima": "Arid",
-            "terreno": "Dessert",
-            "aparicoes": 5,
-            "createdAt": "2019-04-21T21:57:19.740Z",
-            "updatedAt": "2019-04-21T21:57:19.740Z",
-            "__v": 0
-        },
-        {
-            "_id": "5cbce73fed3a4c27c0147bf1",
-            "nome": "aa",
-            "clima": "Aasd",
-            "terreno": "asdfa",
-            "aparicoes": 2,
-            "createdAt": "2019-04-21T21:57:19.740Z",
-            "updatedAt": "2019-04-21T21:57:19.740Z",
-            "__v": 0
-        }
-    ]
-}
-`
 - 404 -> Json com o seguinte erro campos *nome, clima, terreno* são obrigatórios.
 ---
 > PUT: Alterar planeta por ID
