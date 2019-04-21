@@ -3,21 +3,16 @@ import { Request, Response, response } from 'express'
 import { Types } from 'mongoose'
 import request from 'request'
 
-const swAparicoes = async function(obj) {
+const swAparicoes = async function(nome) {
     return new Promise((resolve, reject) => {
         request({ 
-            url: `https://swapi.co/api/planets/?search=${obj.nome}`, 
+            url: `https://swapi.co/api/planets/?search=${nome}`, 
             method: 'GET',
             json: true
         }, (error, resp, body) => {
             if(error || resp.statusCode > 399) reject(false)
-            if(body.count == 0) resolve(body.count) 
-            
-            //Pesquisa do search ocorre por like, essa validação impede de trazer aparições de que não pertence ao filme
-            if(body.results[0].name != obj.nome) resolve(0) 
-            
             try {
-                resolve(body.results[0].films.length)
+                resolve((body.results.length > 0  ? body.results[0].films.length : 0))
             } catch(err) {
                 reject(err)
             }
@@ -55,10 +50,10 @@ class PlanetaController {
 
     public async createPlanet(req: Request, res: Response): Promise<Response> {
         try {
-            var jsonPlanet = new Array(req.body)
+            var jsonPlanet = req.body
             for(let i = 0; i < jsonPlanet.length; i++) 
-                jsonPlanet[i]['aparicoes'] = await swAparicoes(jsonPlanet[i])
-
+                jsonPlanet[i]['aparicoes'] = await swAparicoes(jsonPlanet[i].nome)
+            
             await Planeta.create(jsonPlanet)
             .then((resp) => {
                 return res.status(200).json({
