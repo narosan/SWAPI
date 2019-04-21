@@ -23,9 +23,8 @@
 
 *Para começar o servidor use no seu terminal node: * `npm run dev`
 
----
 **Lista de REST API's**
-
+===
 > GET: Buscar todos os planetas
 `http://localhost:3337/?Planeta` 
 
@@ -51,25 +50,13 @@ A resposta da api deve ser o seguinte objeto:
 
 - 200 -> OK!
 - 404 -> ID não é do tipo ObjectID
-
 ---
 > GET: Buscar planeta por nome
 `http://localhost:3337/Planeta/Nome/?nome`
 
 A resposta da api deve ser o seguinte objeto: 
 
-`
-{
-    "_id": "5cbb8033a37c701e2c23f26e",
-    "nome": "Tatooine",
-    "clima": "quente",
-    "terreno": "deserto",
-    "aparicoes": 5,
-    "createdAt": "2019-04-20T20:25:23.470Z",
-    "updatedAt": "2019-04-20T20:25:23.470Z",
-    "__v": 0
-}
-`
+- 200 -> OK!
 ---
 > POST: Criar planeta(s)
 `http://localhost:3337/Planeta`
@@ -118,31 +105,7 @@ Exemplo de json enviado para API:
     ]
 }
 `
-- 404 -> Campos *nome, clima, terreno* são obrigatórios.
-`
-{
-    "message": {
-        "errors": {
-            "nome": {
-                "message": "Nome não pode ser vázio.",
-                "name": "ValidatorError",
-                "properties": {
-                    "message": "Nome não pode ser vázio.",
-                    "type": "required",
-                    "path": "nome",
-                    "value": ""
-                },
-                "kind": "required",
-                "path": "nome",
-                "value": ""
-            }
-        },
-        "_message": "Planeta validation failed",
-        "message": "Planeta validation failed: nome: Nome não pode ser vázio.",
-        "name": "ValidationError"
-    }
-}
-`
+- 404 -> Json com o seguinte erro campos *nome, clima, terreno* são obrigatórios.
 ---
 > PUT: Alterar planeta por ID
 `http://localhost:3337/Planeta/ObjectID`
