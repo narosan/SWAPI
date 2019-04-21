@@ -11,8 +11,6 @@ const swAparicoes = async function(obj) {
             json: true
         }, (error, resp, body) => {
             if(error || resp.statusCode > 399) reject(false)
-            
-            //evitar undefined no create
             if(body.count == 0) resolve(body.count) 
             
             //Pesquisa do search ocorre por like, essa validação impede de trazer aparições de que não pertence ao filme
@@ -57,8 +55,7 @@ class PlanetaController {
 
     public async createPlanet(req: Request, res: Response): Promise<Response> {
         try {
-            var jsonPlanet = new Array(req.body) // BugFix se usuário passar obj e não json não existia forEach para body
-            
+            var jsonPlanet = new Array(req.body)
             for(let i = 0; i < jsonPlanet.length; i++) 
                 jsonPlanet[i]['aparicoes'] = await swAparicoes(jsonPlanet[i])
 
