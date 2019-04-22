@@ -11,7 +11,6 @@ const swAparicoes = async function(nome) {
             json: true
         }, (error, resp, body) => {
             if(error || resp.statusCode > 399) reject(false)
-            console.log(body)
             try {
                 resolve((body.results.length > 0  ? body.results[0].films.length : 0))
             } catch(err) {
@@ -58,7 +57,7 @@ class PlanetaController {
 
             for(let i = 0; i < jsonPlanet.length; i++) 
                 jsonPlanet[i]['aparicoes'] = await swAparicoes(jsonPlanet[i].nome)
-            console.log(jsonPlanet)
+                
             await Planeta.create(jsonPlanet)
             .then((resp) => {
                 return res.status(200).json({
