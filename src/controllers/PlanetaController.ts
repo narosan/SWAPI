@@ -10,11 +10,13 @@ const swAparicoes = async function(nome) {
             method: 'GET',
             json: true
         }, (error, resp, body) => {
-            if(error || resp.statusCode > 399) reject(false)
+            if(body.results.length == 0) resolve(0)
+            //Busca na swapi é feito com like, condição confirma se o nome do planeta é igual
+            if(body.results[0].name.toLowerCase().trim() != nome.toLowerCase().trim()) resolve(0)
             try {
-                resolve((body.results.length > 0  ? body.results[0].films.length : 0))
+                resolve(body.results[0].films.length)
             } catch(err) {
-                reject(err)
+                reject(0)
             }
         })
     })
@@ -57,7 +59,7 @@ class PlanetaController {
 
             for(let i = 0; i < jsonPlanet.length; i++) 
                 jsonPlanet[i]['aparicoes'] = await swAparicoes(jsonPlanet[i].nome)
-                
+
             await Planeta.create(jsonPlanet)
             .then((resp) => {
                 return res.status(200).json({
