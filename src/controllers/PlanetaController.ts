@@ -11,6 +11,7 @@ const swAparicoes = async function(nome) {
             json: true
         }, (error, resp, body) => {
             if(error || resp.statusCode > 399) reject(false)
+            console.log(body)
             try {
                 resolve((body.results.length > 0  ? body.results[0].films.length : 0))
             } catch(err) {
@@ -49,11 +50,15 @@ class PlanetaController {
     }
 
     public async createPlanet(req: Request, res: Response): Promise<Response> {
+        var jsonPlanet;
         try {
-            var jsonPlanet = req.body
+            //Correção necessária quando JSON é enviado como obj
+            if(!Array.isArray(req.body)) jsonPlanet = new Array(req.body)
+            else jsonPlanet = req.body
+
             for(let i = 0; i < jsonPlanet.length; i++) 
                 jsonPlanet[i]['aparicoes'] = await swAparicoes(jsonPlanet[i].nome)
-            
+            console.log(jsonPlanet)
             await Planeta.create(jsonPlanet)
             .then((resp) => {
                 return res.status(200).json({
