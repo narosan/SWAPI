@@ -16,12 +16,12 @@
 
 7.request `npm install request`
 
-*Ou simplesmente xD*
+*Ou simplesmente*
 
 `npm install express mongoose sucrase nodemon body-parser helmet request
 @types/express @types/mongoose @ types/helmet`
 
-*Para começar o servidor use no seu terminal node: * `npm run dev`
+Para começar o servidor use no seu terminal node: `npm run dev`
 
 **Lista de REST API's**
 ===
