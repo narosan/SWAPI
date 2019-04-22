@@ -26,7 +26,7 @@ Para começar o servidor use no seu terminal node: `npm run dev`
 **Lista de REST API's**
 ===
 > GET: Buscar todos os planetas
-`http://localhost:3337/?Planeta` 
+`http://localhost:3337/Planeta` 
 
 - 200 -> OK!
 ---
@@ -61,17 +61,17 @@ Exemplo de json enviado para API:
 ]
 `
 - 200 -> OK!
-- 404 -> Json com o seguinte erro campos *nome, clima, terreno* são obrigatórios.
+- 404 -> Json com erros *nome, clima e terreno* são obrigatórios.
 ---
 > PUT: Alterar planeta por ID
-`http://localhost:3337/Planeta/ObjectID`
+`http://localhost:3337/Planeta/?ObjectID`
 
 - 200 -> OK!
 - 404 -> ID não é do tipo ObjectID
 - 500 -> Erro ao atualizar registro.
 ---
 > DELETE: Deletar planeta por ID
-`http://localhost:3337/Planeta/ObjectID`
+`http://localhost:3337/Planeta/?ObjectID`
 
 - 200 -> OK!
 - 404 -> ID não é do tipo ObjectID
